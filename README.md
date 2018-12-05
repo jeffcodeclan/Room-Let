@@ -1,7 +1,7 @@
 # README
 
-* Ruby version
+Rails version: 5.2.2
 
-* System dependencies
+Ruby version: 2.5.1
 
 
