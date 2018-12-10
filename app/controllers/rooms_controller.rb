@@ -11,12 +11,13 @@ before_action :authenticate_user!, except: [:show]
   end
 
   def create
-    @rooms = current_user.rooms.build(room_params)
-    if @rooms.save
-      redirect_to listing_room_path(@rooms), notice: "Saved..."
+    @room = current_user.rooms.build(room_params)
+    if @room.save
+      redirect_to listing_room_path(@room), notice: "Saved..."
     else
-      render :new, notice: "Something went wrong..."
-    end  
+      flash[:alert] = "Something went wrong..."
+      render :new
+    end
   end
 
   def show
@@ -44,7 +45,7 @@ before_action :authenticate_user!, except: [:show]
     if @room.update(room_params)
       flash[:notice] = "Saved..."
     else  
-      flash[:notice] = "Something went wrong..."
+      flash[:alert] = "Something went wrong..."
     end
     redirect_back(fallback_location: request.referer)
   end
