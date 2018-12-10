@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
-  devise_for :users
   root 'pages#home'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  devise_for :users
+
+  resources :rooms, except: [:edit] do
+    member do
+      get 'listing'
+      get 'pricing'
+      get 'description'
+      get 'photo_upload'
+      get 'pricing'
+      get 'amenities'
+      get 'location'
+    end
+  end
 end
