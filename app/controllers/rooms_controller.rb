@@ -44,9 +44,13 @@ before_action :is_authorised, only: [:listing, :pricing, :description, :photo_up
   end
 
   def update
-    if @room.update(room_params)
+
+    new_params = room_params
+    new_params = room_params.merge(active: true) if is_ready_room
+
+    if @room.update(new_params)
       flash[:notice] = "Saved..."
-    else  
+    else
       flash[:alert] = "Something went wrong..."
     end
     redirect_back(fallback_location: request.referer)
@@ -59,6 +63,10 @@ before_action :is_authorised, only: [:listing, :pricing, :description, :photo_up
 
     def is_authorised
       redirect_to root_path, alert: "You do not have permission" unless current_user.id == @room.user_id
+    end
+
+    def is_ready_room
+      !@room.active && !@room.price.blank? && !@room.listing_name.blank? && !@room.photos.blank? && !@room.address.blank?
     end
 
     def room_params
